@@ -1,0 +1,160 @@
+<Window x:Class="CoolRetroTerm.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:CoolRetroTerm.Controls"
+        Title="Cool Retro Term" 
+        Height="600" 
+        Width="800"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowState="Normal"
+        ResizeMode="CanResize"
+        Icon="../Resources/icon.ico">
+    
+    <Window.Resources>
+        <!-- Retro Terminal Background Gradient -->
+        <RadialGradientBrush x:Key="CRTScreenBrush">
+            <GradientStop Color="#001100" Offset="0"/>
+            <GradientStop Color="#000800" Offset="0.7"/>
+            <GradientStop Color="#000000" Offset="1"/>
+        </RadialGradientBrush>
+        
+        <!-- Scanline Effect -->
+        <DrawingBrush x:Key="ScanlinesBrush" TileMode="Tile" Viewport="0,0,1,4" ViewportUnits="Absolute">
+            <DrawingBrush.Drawing>
+                <GeometryDrawing>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="0,0,1,4"/>
+                    </GeometryDrawing.Geometry>
+                    <GeometryDrawing.Brush>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#00FF00" Offset="0"/>
+                            <GradientStop Color="#00AA00" Offset="0.3"/>
+                            <GradientStop Color="#004400" Offset="0.7"/>
+                            <GradientStop Color="#002200" Offset="1"/>
+                        </LinearGradientBrush>
+                    </GeometryDrawing.Brush>
+                </GeometryDrawing>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Main CRT Frame -->
+        <Border x:Name="CrtFrame" 
+                Background="Black" 
+                BorderBrush="#333333" 
+                BorderThickness="20"
+                CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" Color="Black" ShadowDepth="10" Opacity="0.7"/>
+            </Border.Effect>
+            
+            <!-- Screen Container with curvature effect -->
+            <Border x:Name="ScreenBorder"
+                    Background="{StaticResource CRTScreenBrush}"
+                    CornerRadius="5"
+                    Margin="10">
+                <Border.Effect>
+                    <BlurEffect Radius="0"/>
+                </Border.Effect>
+                
+                <Grid>
+                    <!-- Terminal Display -->
+                    <controls:TerminalControl x:Name="TerminalDisplay"
+                                            Margin="20"/>
+                    
+                    <!-- Scanlines overlay -->
+                    <Rectangle x:Name="ScanlinesOverlay"
+                               Fill="{StaticResource ScanlinesBrush}"
+                               Opacity="0.15"
+                               IsHitTestVisible="False"/>
+                    
+                    <!-- Screen glow effect -->
+                    <Rectangle x:Name="GlowOverlay"
+                               Fill="#00FF00"
+                               Opacity="0.05"
+                               IsHitTestVisible="False">
+                        <Rectangle.Effect>
+                            <BlurEffect Radius="30"/>
+                        </Rectangle.Effect>
+                    </Rectangle>
+                    
+                    <!-- Status bar -->
+                    <Border Background="#20000000" 
+                            Height="25" 
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Stretch"
+                            Margin="10,5,10,0">
+                        <StackPanel Orientation="Horizontal" 
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0">
+                            <TextBlock Text="Cool Retro Term" 
+                                      Foreground="#00FF00" 
+                                      FontFamily="Consolas"
+                                      FontSize="10"/>
+                            <TextBlock Text=" | " 
+                                      Foreground="#008800" 
+                                      FontFamily="Consolas"
+                                      FontSize="10"/>
+                            <TextBlock x:Name="StatusText"
+                                      Text="Ready" 
+                                      Foreground="#00AA00" 
+                                      FontFamily="Consolas"
+                                      FontSize="10"/>
+                        </StackPanel>
+                        
+                        <!-- Window controls -->
+                        <StackPanel Orientation="Horizontal" 
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0">
+                            <Button x:Name="SettingsButton"
+                                    Content="⚙"
+                                    Background="Transparent"
+                                    Foreground="#00FF00"
+                                    BorderThickness="0"
+                                    FontSize="12"
+                                    Width="20"
+                                    Height="20"
+                                    Click="SettingsButton_Click"
+                                    ToolTip="Settings"/>
+                            <Button x:Name="MinimizeButton"
+                                    Content="_"
+                                    Background="Transparent"
+                                    Foreground="#FFFF00"
+                                    BorderThickness="0"
+                                    FontSize="12"
+                                    Width="20"
+                                    Height="20"
+                                    Click="MinimizeButton_Click"
+                                    ToolTip="Minimize"/>
+                            <Button x:Name="MaximizeButton"
+                                    Content="□"
+                                    Background="Transparent"
+                                    Foreground="#00FFFF"
+                                    BorderThickness="0"
+                                    FontSize="12"
+                                    Width="20"
+                                    Height="20"
+                                    Click="MaximizeButton_Click"
+                                    ToolTip="Maximize"/>
+                            <Button x:Name="CloseButton"
+                                    Content="✕"
+                                    Background="Transparent"
+                                    Foreground="#FF4444"
+                                    BorderThickness="0"
+                                    FontSize="12"
+                                    Width="20"
+                                    Height="20"
+                                    Click="CloseButton_Click"
+                                    ToolTip="Close"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Border>
+    </Grid>
+</Window>

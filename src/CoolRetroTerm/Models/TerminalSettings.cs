@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace CoolRetroTerm.Models
 {
@@ -18,6 +19,7 @@ namespace CoolRetroTerm.Models
         private int _scanlineIntensity = 50;
         private int _glowIntensity = 30;
 
+        [JsonProperty("fontFamily")]
         public string FontFamily
         {
             get => _fontFamily;
@@ -28,6 +30,7 @@ namespace CoolRetroTerm.Models
             }
         }
 
+        [JsonProperty("fontSize")]
         public int FontSize
         {
             get => _fontSize;
@@ -38,6 +41,7 @@ namespace CoolRetroTerm.Models
             }
         }
 
+        [JsonProperty("foregroundColor")]
         public string ForegroundColor
         {
             get => _foregroundColor;
@@ -48,6 +52,7 @@ namespace CoolRetroTerm.Models
             }
         }
 
+        [JsonProperty("backgroundColor")]
         public string BackgroundColor
         {
             get => _backgroundColor;
@@ -58,6 +63,7 @@ namespace CoolRetroTerm.Models
             }
         }
 
+        [JsonProperty("opacity")]
         public double Opacity
         {
             get => _opacity;
@@ -68,6 +74,7 @@ namespace CoolRetroTerm.Models
             }
         }
 
+        [JsonProperty("enableScanlines")]
         public bool EnableScanlines
         {
             get => _enableScanlines;
@@ -78,6 +85,7 @@ namespace CoolRetroTerm.Models
             }
         }
 
+        [JsonProperty("enableGlow")]
         public bool EnableGlow
         {
             get => _enableGlow;
@@ -88,6 +96,7 @@ namespace CoolRetroTerm.Models
             }
         }
 
+        [JsonProperty("enableCurvature")]
         public bool EnableCurvature
         {
             get => _enableCurvature;
@@ -98,6 +107,7 @@ namespace CoolRetroTerm.Models
             }
         }
 
+        [JsonProperty("scanlineIntensity")]
         public int ScanlineIntensity
         {
             get => _scanlineIntensity;
@@ -108,6 +118,7 @@ namespace CoolRetroTerm.Models
             }
         }
 
+        [JsonProperty("glowIntensity")]
         public int GlowIntensity
         {
             get => _glowIntensity;
@@ -123,6 +134,26 @@ namespace CoolRetroTerm.Models
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Create a deep copy of the settings
+        /// </summary>
+        public TerminalSettings Clone()
+        {
+            return new TerminalSettings
+            {
+                FontFamily = this.FontFamily,
+                FontSize = this.FontSize,
+                ForegroundColor = this.ForegroundColor,
+                BackgroundColor = this.BackgroundColor,
+                Opacity = this.Opacity,
+                EnableScanlines = this.EnableScanlines,
+                EnableGlow = this.EnableGlow,
+                EnableCurvature = this.EnableCurvature,
+                ScanlineIntensity = this.ScanlineIntensity,
+                GlowIntensity = this.GlowIntensity
+            };
         }
     }
 }

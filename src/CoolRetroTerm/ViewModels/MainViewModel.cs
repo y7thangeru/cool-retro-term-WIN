@@ -48,6 +48,17 @@ namespace CoolRetroTerm.ViewModels
 
         public FontManagerService FontManager => _fontManager;
 
+        public void StartTerminalSession()
+        {
+            if (_terminalService != null && !_terminalService.IsSessionRunning)
+            {
+                _terminalService.StartNewSession();
+                StatusText = "Terminal session started";
+            }
+        }
+
+        public TerminalService TerminalService => _terminalService;
+
         private void LoadSettings()
         {
             // Load settings from application data directory
@@ -60,8 +71,23 @@ namespace CoolRetroTerm.ViewModels
                 try
                 {
                     var json = _fileIOService.ReadFile(settingsPath);
-                    // Simple JSON parsing would go here
-                    // For now, use defaults
+                    if (!string.IsNullOrEmpty(json))
+                    {
+                        var loadedSettings = Newtonsoft.Json.JsonConvert.DeserializeObject<TerminalSettings>(json);
+                        if (loadedSettings != null)
+                        {
+                            Settings.FontFamily = loadedSettings.FontFamily;
+                            Settings.FontSize = loadedSettings.FontSize;
+                            Settings.ForegroundColor = loadedSettings.ForegroundColor;
+                            Settings.BackgroundColor = loadedSettings.BackgroundColor;
+                            Settings.Opacity = loadedSettings.Opacity;
+                            Settings.EnableScanlines = loadedSettings.EnableScanlines;
+                            Settings.EnableGlow = loadedSettings.EnableGlow;
+                            Settings.EnableCurvature = loadedSettings.EnableCurvature;
+                            Settings.ScanlineIntensity = loadedSettings.ScanlineIntensity;
+                            Settings.GlowIntensity = loadedSettings.GlowIntensity;
+                        }
+                    }
                 }
                 catch
                 {
@@ -85,20 +111,8 @@ namespace CoolRetroTerm.ViewModels
 
             try
             {
-                // Simple JSON serialization would go here
-                // For now, just create a basic settings file
-                var settingsContent = $@"{{
-    ""FontFamily"": ""{Settings.FontFamily}"",
-    ""FontSize"": {Settings.FontSize},
-    ""ForegroundColor"": ""{Settings.ForegroundColor}"",
-    ""BackgroundColor"": ""{Settings.BackgroundColor}"",
-    ""Opacity"": {Settings.Opacity},
-    ""EnableScanlines"": {Settings.EnableScanlines.ToString().ToLower()},
-    ""EnableGlow"": {Settings.EnableGlow.ToString().ToLower()},
-    ""EnableCurvature"": {Settings.EnableCurvature.ToString().ToLower()}
-}}";
-
-                _fileIOService.WriteFile(settingsPath, settingsContent);
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(Settings, Newtonsoft.Json.Formatting.Indented);
+                _fileIOService.WriteFile(settingsPath, json);
             }
             catch
             {
