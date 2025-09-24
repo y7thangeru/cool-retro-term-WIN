@@ -48,3 +48,17 @@ cool-retro-term
 
 .DS_Store
 *.app
+
+# Windows
+
+*.exe
+*.pdb
+*.ilk
+*.obj
+*.res
+*.rc
+debug/
+release/
+*.manifest
+*.exp
+*.lib

@@ -47,6 +47,12 @@ int main(int argc, char *argv[])
     setenv("LC_CTYPE", "UTF-8", 1);
 #endif
 
+#if defined(Q_OS_WIN)
+    // Windows-specific environment setup for PowerShell integration
+    qputenv("QSG_RENDER_LOOP", "basic");
+    qputenv("QT_OPENGL", "angle");
+#endif
+
     if (argc>1 && (!strcmp(argv[1],"-h") || !strcmp(argv[1],"--help"))) {
         QTextStream cout(stdout, QIODevice::WriteOnly);
         cout << "Usage: " << argv[0] << " [--default-settings] [--workdir <dir>] [--program <prog>] [-p|--profile <prof>] [--fullscreen] [-h|--help]" << endl;
@@ -99,7 +105,21 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("defaultCmd", command);
     engine.rootContext()->setContextProperty("defaultCmdArgs", commandArgs);
 
-    engine.rootContext()->setContextProperty("workdir", getNamedArgument(args, "--workdir", "$HOME"));
+    // Set appropriate default working directory based on platform
+    QString defaultWorkdir;
+#if defined(Q_OS_WIN)
+    defaultWorkdir = QString::fromLocal8Bit(qgetenv("USERPROFILE"));
+    if (defaultWorkdir.isEmpty()) {
+        defaultWorkdir = QString::fromLocal8Bit(qgetenv("HOMEDRIVE")) + QString::fromLocal8Bit(qgetenv("HOMEPATH"));
+    }
+    if (defaultWorkdir.isEmpty()) {
+        defaultWorkdir = "C:\\";
+    }
+#else
+    defaultWorkdir = "$HOME";
+#endif
+
+    engine.rootContext()->setContextProperty("workdir", getNamedArgument(args, "--workdir", defaultWorkdir));
     engine.rootContext()->setContextProperty("fileIO", &fileIO);
     engine.rootContext()->setContextProperty("monospaceSystemFonts", monospaceFontManager.retrieveMonospaceFonts());
 

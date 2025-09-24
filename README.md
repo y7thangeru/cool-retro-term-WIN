@@ -10,7 +10,9 @@ It has been designed to be eye-candy, customizable, and reasonably lightweight.
 
 It uses the QML port of qtermwidget (Konsole): https://github.com/Swordfish90/qmltermwidget.
 
-This terminal emulator works under Linux and macOS and requires Qt5. It's suggested that you stick to the latest LTS version.
+This terminal emulator works under Linux, macOS, and Windows 11 and requires Qt5. It's suggested that you stick to the latest LTS version.
+
+**Windows 11 Support**: This fork includes native Windows 11 PowerShell integration while maintaining the same retro visual effects.
 
 Settings such as colors, fonts, and effects can be accessed via context menu.
 
@@ -28,3 +30,22 @@ Alternatively, most distributions such as Ubuntu, Fedora or Arch already package
 ## Building
 
 Check out the wiki and follow the instructions on how to build it on [Linux](https://github.com/Swordfish90/cool-retro-term/wiki/Build-Instructions-(Linux)) and [macOS](https://github.com/Swordfish90/cool-retro-term/wiki/Build-Instructions-(macOS)).
+
+### Windows 11 Building
+
+To build on Windows 11:
+
+1. Install Qt 5.15+ (Qt Creator recommended)
+2. Install Visual Studio Build Tools or Community Edition  
+3. Clone the repository:
+   ```
+   git clone --recursive https://github.com/y7thangeru/cool-retro-term-WIN.git
+   ```
+4. Open the project in Qt Creator or build from command line:
+   ```
+   qmake
+   nmake
+   ```
+5. The executable will be created in the build directory
+
+**PowerShell Integration**: The Windows version automatically detects Windows 11 and uses PowerShell as the default shell while maintaining all the original retro visual effects.

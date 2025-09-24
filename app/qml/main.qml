@@ -162,9 +162,9 @@ ApplicationWindow {
         }
     }
     onClosing: {
-        // OSX Since we are currently supporting only one window
+        // OSX and Windows: Since we are currently supporting only one window
         // quit the application when it is closed.
-        if (appSettings.isMacOS)
+        if (appSettings.isMacOS || appSettings.isWindows)
             Qt.quit()
     }
 }

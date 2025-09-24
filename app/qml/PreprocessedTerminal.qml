@@ -171,6 +171,10 @@ Item{
             } else if (!defaultCmd && appSettings.isMacOS) {
                 // OSX Requires the following default parameters for auto login.
                 ksession.setArgs(["-i", "-l"]);
+            } else if (!defaultCmd && appSettings.isWindows) {
+                // Windows: Use PowerShell as default shell
+                ksession.setShellProgram("powershell.exe");
+                ksession.setArgs(["-NoLogo"]);
             }
 
             if (workdir)
@@ -198,7 +202,7 @@ Item{
 
     Loader {
         id: menuLoader
-        sourceComponent: (appSettings.isMacOS || appSettings.showMenubar ? shortContextMenu : fullContextMenu)
+        sourceComponent: (appSettings.isMacOS || appSettings.isWindows || appSettings.showMenubar ? shortContextMenu : fullContextMenu)
     }
     property alias contextmenu: menuLoader.item
 

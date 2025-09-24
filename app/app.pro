@@ -12,16 +12,25 @@ SOURCES = main.cpp \
     monospacefontmanager.cpp
 
 macx:ICON = icons/crt.icns
+win32:RC_ICONS = icons/cool-retro-term.ico
 
 RESOURCES += qml/resources.qrc
 
 #########################################
-##              INTALLS
+##              INSTALLS
 #########################################
 
-target.path += /usr/bin/
+# Unix/Linux installations
+unix {
+    target.path += /usr/bin/
+    INSTALLS += target
+}
 
-INSTALLS += target
+# Windows installations  
+win32 {
+    target.path += C:/Program Files/cool-retro-term
+    INSTALLS += target
+}
 
 # Install icons
 unix {
